@@ -1,0 +1,71 @@
+.main-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+  p {
+    margin: 0;
+  }
+}
+
+.game-container {
+  display: flex;
+  &-content {
+    padding: 10px;
+    border: 1px solid black;
+    width: 100px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  &-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
+    button {
+      display: block;
+    }
+  }
+}
+
+.manual-container {
+  margin-left: 100px;
+  margin-bottom: 50px;
+  display: block;
+  width: 550px;
+}
+
+.messages-container {
+  margin-left: 100px;
+  display: block;
+  width: 550px;
+  .scrollMe {
+    height: 260px;
+    overflow: auto;
+  }
+}
+
+.blackbackground {
+  background-color: rgba(2, 2, 2, 0.849);
+  p,
+  img {
+    display: none;
+  }
+}
+
+.wall-text {
+  color: rgb(175, 0, 0);
+}
+
+.death-text {
+  color: rgb(146, 0, 0);
+}
+
+.victory-text {
+  color: rgb(62, 143, 8);
+}
+
+.perception-text {
+  color: rgb(106, 1, 155)
+}

@@ -1,0 +1,55 @@
+<div *ngIf="!isLoading" class="main-container">
+  <div>
+    <div class="game-container" *ngFor="let room of game.rooms; let i = index">
+      <div *ngFor="let item of room; let j = index" [ngClass]="[!showRoom(i, j) ? 'blackbackground' : '']" class="game-container-content">
+        <p *ngIf="item.exit">Salida</p>
+        <p *ngIf="showPerception(i, j) && item.smell"><i>hedor</i></p>
+        <p *ngIf="showPerception(i, j) && item.breeze"><i>brisa</i></p>
+        <p *ngIf="showPerception(i, j) && item.shine"><i>brillo</i></p>
+        <img *ngIf="item.gold" src="/assets/images/gold.png">
+        <img *ngIf="item.wumpus" src="/assets/images/wumpus.png">
+        <img *ngIf="item.pit" src="/assets/images/pozo.png">
+        <img *ngIf="game.hunter.orientation == 'right' && isHunter(i, j)" src="/assets/images/zeldaright.png">
+        <img *ngIf="game.hunter.orientation == 'left' && isHunter(i, j)" src="/assets/images/zeldaleft.png">
+        <img *ngIf="game.hunter.orientation == 'top' && isHunter(i, j)" src="/assets/images/zeldatop.png">
+        <img *ngIf="game.hunter.orientation == 'bottom' && isHunter(i, j)" src="/assets/images/zeldabottom.png">
+      </div>
+    </div>
+    <div class="game-container-buttons">
+      <button (click)="turnAround('left')" [disabled]="disableActions" pButton type="button" label="Girar 90º Izq" icon="pi pi-replay" class="p-button-sm"></button>
+      <button (click)="turnAround('right')" [disabled]="disableActions" pButton type="button" label="Girar 90º Der" icon="pi pi-refresh" class="p-button-sm"></button>
+      <button (click)="moveHunter()" [disabled]="disableActions" pButton type="button" label="Avanzar" icon="pi pi-angle-double-up" class="p-button-sm"></button>
+    </div>
+    <div style="display: flex; justify-content: center; margin-top: 20px;">
+      <button (click)="startGame()" pButton type="button" label="Nueva partida" icon="pi pi-plus" class="p-button-sm"></button>
+    </div>
+  </div>
+  <div>
+    <p-fieldset class="manual-container" legend="Ver instrucciones" [toggleable]="true" collapsed="true">
+      <b>¡Bienvenido al mundo de Wumpus!</b><br><br>
+      Objetivos:
+      <ul>
+        <li>Consigue el oro y vuelve hasta la casilla de salida</li>
+      </ul>
+      Avisos:
+      <ul>
+        <li>Evite ser comido por Wumpus</li>
+        <li>Evite caer en un pozo</li>
+      </ul>
+      Pistas:
+      <ul>
+        <li>Cuando este en una casilla adyacente al oro, usted percibira un brillo</li>
+        <li>Cuando este en una casilla adyacente al Wumpus, usted percibira un hedor</li>
+        <li>Cuando este en una casilla adyacente a un pozo, usted percibira una brisa</li>
+      </ul>
+    </p-fieldset>
+    <p-fieldset class="messages-container" legend="Respuestas">
+      <div class="scrollMe" #scrollMe [innerHtml]="message"></div>
+    </p-fieldset>
+  </div>
+</div>
+<p-confirmDialog header="Resultado" rejectLabel="Cerrar"></p-confirmDialog>
+<!-- Spinner -->
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+  <p-progressSpinner *ngIf="isLoading"></p-progressSpinner>
+</div>
