@@ -15,6 +15,10 @@ export class HomeComponent implements OnInit {
   message: string = '';
   disableActions: boolean;
   isLoading: boolean;
+  totalGamesAmount: number = 0;
+  totalVictories: number = 0;
+  deathByWumpus: number = 0;
+  deathByPit: number = 0;
 
   constructor(
     private homeService: HomeService,
@@ -31,17 +35,47 @@ export class HomeComponent implements OnInit {
 
   startGame(): void {
     this.isLoading = true;
-    this.homeService.startGame().subscribe((res: Game) => {
+    this.homeService.startGame().then((res: Game) => {
       this.game = res;
       this.message = res.message;
       this.disableActions = false;
       this.isLoading = false;
-    }, (err) => {
+    }).catch(() => {
       this.confirmationService.confirm({
         message: 'Se ha producido un problema al crear la partida',
         acceptVisible: false,
       });
       this.isLoading = false;
+    });
+    this.getGamesResult();
+  }
+
+  getGamesResult(): void {
+    this.homeService.getGamesResult().then((res) => {
+      let totalGamesAmount: number = 0;
+      let totalVictories: number = 0;
+      let deathByWumpus: number = 0;
+      let deathByPit: number = 0;
+      res.Items?.forEach(item => {
+        if (item.ended) {
+          totalGamesAmount++;
+          switch (item.result) {
+            case 'deathByWumpus':
+              deathByWumpus++;
+              break;
+            case 'deathByPit':
+              deathByPit++;
+              break;
+            case 'victory':
+              totalVictories++;
+              break;
+          }
+        }
+      });
+      this.totalGamesAmount = totalGamesAmount;
+      this.totalVictories = totalVictories;
+      this.deathByWumpus = deathByWumpus;
+      this.deathByPit = deathByPit;
     });
   }
 
@@ -52,7 +86,7 @@ export class HomeComponent implements OnInit {
   }
 
   moveHunter(): void {
-    this.homeService.moveHunter(this.game).subscribe(res => {
+    this.homeService.moveHunter(this.game).then(res => {
       this.game.hunter = res.hunter;
       this.message = this.message + res.message;
       const victory = res.victory;
@@ -80,7 +114,7 @@ export class HomeComponent implements OnInit {
           }
         });
       }
-    }, (err) => {
+    }).catch(() => {
       this.confirmationService.confirm({
         message: 'Se ha producido un problema al cargar la petición',
         acceptVisible: false,
@@ -93,9 +127,9 @@ export class HomeComponent implements OnInit {
       direction: direction,
       hunter: this.game.hunter
     };
-    this.homeService.turnAround(body).subscribe(res => {
+    this.homeService.turnAround(body).then(res => {
       this.game.hunter = res;
-    }, (err) => {
+    }).catch(() => {
       this.confirmationService.confirm({
         message: 'Se ha producido un problema al cargar la petición',
         acceptVisible: false,

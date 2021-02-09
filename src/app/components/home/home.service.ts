@@ -15,15 +15,19 @@ export class HomeService {
     private http: HttpClient
   ) { }
 
-  startGame(): Observable<Game> {
-    return this.http.get<Game>('https://1x7zwhr4mg.execute-api.eu-central-1.amazonaws.com/dev/');
+  startGame(): Promise<Game> {
+    return this.http.get<Game>('https://1x7zwhr4mg.execute-api.eu-central-1.amazonaws.com/dev/').toPromise();
   }
 
-  moveHunter(game: Game): Observable<any> {
-    return this.http.post<any>('https://1x7zwhr4mg.execute-api.eu-central-1.amazonaws.com/dev/make-movement', game);
+  getGamesResult(): Promise<any> {
+    return this.http.get<any>('https://1x7zwhr4mg.execute-api.eu-central-1.amazonaws.com/dev/games-result').toPromise();
   }
 
-  turnAround(body: any): Observable<any> {
-    return this.http.post<any>('https://1x7zwhr4mg.execute-api.eu-central-1.amazonaws.com/dev/turn-around', body);
+  moveHunter(game: Game): Promise<any> {
+    return this.http.post<any>('https://1x7zwhr4mg.execute-api.eu-central-1.amazonaws.com/dev/make-movement', game).toPromise();
+  }
+
+  turnAround(body: any): Promise<any> {
+    return this.http.post<any>('https://1x7zwhr4mg.execute-api.eu-central-1.amazonaws.com/dev/turn-around', body).toPromise();
   }
 }

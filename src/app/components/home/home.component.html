@@ -1,26 +1,46 @@
 <div *ngIf="!isLoading" class="main-container">
+  <div class="stats">
+    <p-fieldset legend="Estadisticas">
+      <ul>
+        <li>
+          Total de partidas: <b>{{totalGamesAmount}}</b>
+        </li>
+        <li>
+          <span class="stats-win-text">Victorias: </span><b>{{totalVictories}}</b>
+        </li>
+        <li>
+          <span class="stats-loss-text">Muertes por Wumpus: </span><b>{{deathByWumpus}}</b>
+        </li>
+        <li>
+          <span class="stats-loss-text">Muertes por pozos: </span><b>{{deathByPit}}</b>
+        </li>
+      </ul>
+    </p-fieldset>
+  </div>
   <div>
-    <div class="game-container" *ngFor="let room of game.rooms; let i = index">
-      <div *ngFor="let item of room; let j = index" [ngClass]="[!showRoom(i, j) ? 'blackbackground' : '']" class="game-container-content">
-        <p *ngIf="item.exit">Salida</p>
-        <p *ngIf="showPerception(i, j) && item.smell"><i>hedor</i></p>
-        <p *ngIf="showPerception(i, j) && item.breeze"><i>brisa</i></p>
-        <p *ngIf="showPerception(i, j) && item.shine"><i>brillo</i></p>
-        <img *ngIf="item.gold" src="/assets/images/gold.png">
-        <img *ngIf="item.wumpus" src="/assets/images/wumpus.png">
-        <img *ngIf="item.pit" src="/assets/images/pozo.png">
-        <img *ngIf="game.hunter.orientation == 'right' && isHunter(i, j)" src="/assets/images/zeldaright.png">
-        <img *ngIf="game.hunter.orientation == 'left' && isHunter(i, j)" src="/assets/images/zeldaleft.png">
-        <img *ngIf="game.hunter.orientation == 'top' && isHunter(i, j)" src="/assets/images/zeldatop.png">
-        <img *ngIf="game.hunter.orientation == 'bottom' && isHunter(i, j)" src="/assets/images/zeldabottom.png">
+    <div *ngIf="game.rooms">
+      <div class="game-container" *ngFor="let room of game.rooms; let i = index">
+        <div *ngFor="let item of room; let j = index" [ngClass]="[!showRoom(i, j) ? 'blackbackground' : '']" class="game-container-content">
+          <p *ngIf="item.exit">Salida</p>
+          <p *ngIf="showPerception(i, j) && item.smell"><i>hedor</i></p>
+          <p *ngIf="showPerception(i, j) && item.breeze"><i>brisa</i></p>
+          <p *ngIf="showPerception(i, j) && item.shine"><i>brillo</i></p>
+          <img *ngIf="item.gold" src="/assets/images/gold.png">
+          <img *ngIf="item.wumpus" src="/assets/images/wumpus.png">
+          <img *ngIf="item.pit" src="/assets/images/pozo.png">
+          <img *ngIf="game.hunter.orientation == 'right' && isHunter(i, j)" src="/assets/images/zeldaright.png">
+          <img *ngIf="game.hunter.orientation == 'left' && isHunter(i, j)" src="/assets/images/zeldaleft.png">
+          <img *ngIf="game.hunter.orientation == 'top' && isHunter(i, j)" src="/assets/images/zeldatop.png">
+          <img *ngIf="game.hunter.orientation == 'bottom' && isHunter(i, j)" src="/assets/images/zeldabottom.png">
+        </div>
+      </div>
+      <div class="game-container-buttons">
+        <button (click)="turnAround('left')" [disabled]="disableActions" pButton type="button" label="Girar 90º Izq" icon="pi pi-replay" class="p-button-sm"></button>
+        <button (click)="turnAround('right')" [disabled]="disableActions" pButton type="button" label="Girar 90º Der" icon="pi pi-refresh" class="p-button-sm"></button>
+        <button (click)="moveHunter()" [disabled]="disableActions" pButton type="button" label="Avanzar" icon="pi pi-angle-double-up" class="p-button-sm"></button>
       </div>
     </div>
-    <div class="game-container-buttons">
-      <button (click)="turnAround('left')" [disabled]="disableActions" pButton type="button" label="Girar 90º Izq" icon="pi pi-replay" class="p-button-sm"></button>
-      <button (click)="turnAround('right')" [disabled]="disableActions" pButton type="button" label="Girar 90º Der" icon="pi pi-refresh" class="p-button-sm"></button>
-      <button (click)="moveHunter()" [disabled]="disableActions" pButton type="button" label="Avanzar" icon="pi pi-angle-double-up" class="p-button-sm"></button>
-    </div>
-    <div style="display: flex; justify-content: center; margin-top: 20px;">
+    <div class="start-game-button">
       <button (click)="startGame()" pButton type="button" label="Nueva partida" icon="pi pi-plus" class="p-button-sm"></button>
     </div>
   </div>
@@ -50,6 +70,6 @@
 </div>
 <p-confirmDialog header="Resultado" rejectLabel="Cerrar"></p-confirmDialog>
 <!-- Spinner -->
-<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+<div class="spinner">
   <p-progressSpinner *ngIf="isLoading"></p-progressSpinner>
 </div>

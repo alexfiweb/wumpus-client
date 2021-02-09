@@ -7,6 +7,20 @@
   }
 }
 
+.stats {
+  margin-right: 100px;
+  ul {
+    padding: 0 20px;
+  }
+  &-win-text {
+    color: rgb(0, 141, 0);
+  }
+  &-loss-text {
+    color: rgb(207, 7, 7);
+    ;
+  }
+}
+
 .game-container {
   display: flex;
   &-content {
@@ -27,6 +41,12 @@
       display: block;
     }
   }
+}
+
+.start-game-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .manual-container {
@@ -68,4 +88,11 @@
 
 .perception-text {
   color: rgb(106, 1, 155)
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
